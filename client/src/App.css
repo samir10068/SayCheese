@@ -36,3 +36,59 @@
     transform: rotate(360deg);
   }
 }
+.app-container {
+  padding: 20px;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.fab-wrapper {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
+
+.fab-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.fab-button.spin {
+  transform: rotate(45deg);
+}
+
+.fab-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  gap: 10px;
+}
+
+.fab-option {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.fab-option:hover {
+  background: #f0f0f0;
+}
+
+.camera-container {
+  margin-top: 20px;
+}
+
+.camera-buttons button {
+  margin: 5px;
+}
