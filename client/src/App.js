@@ -98,13 +98,7 @@ function App() {
     accept="image/*"
     capture="environment"
     style={{ display: 'none' }}
-    onChange={(e) => {
-      const file = e.target.files[0];
-      if (file) {
-        setPhoto(file);
-        uploadFile(file);
-      }
-    }}
+    onChange={handleGalleryUpload}
   />
         </button>
   
