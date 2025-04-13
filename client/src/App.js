@@ -4,7 +4,7 @@ import './App.css'; // You'll add the styles below
 function App() {
   const videoRef = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [photo, setPhoto] = useState(null);
+  const [, setPhoto] = useState(null);
   const [uploadedURL, setUploadedURL] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
