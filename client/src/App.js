@@ -93,24 +93,21 @@ function App() {
       <div className="fab-wrapper">
         <button className={`fab-button ${menuOpen ? 'spin' : ''}`} onClick={toggleMenu}>
           ➕
+          <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    style={{ display: 'none' }}
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setPhoto(file);
+        uploadFile(file);
+      }
+    }}
+  />
         </button>
-        {menuOpen && (
-          <div className="fab-menu">
-            <label className="fab-option">
-              📁 Upload from Gallery
-              <input
-                type="file"
-                accept="image/*"
-                // capture="environment"
-                style={{ display: 'none' }}
-                onChange={handleGalleryUpload}
-              />
-            </label>
-            <label className="fab-option">
- 
-</label>
-          </div>
-        )}
+  
       </div>
     </div>
   );
