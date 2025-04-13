@@ -101,14 +101,27 @@ function App() {
               <input
                 type="file"
                 accept="image/*"
-                capture="environment"
+                // capture="environment"
                 style={{ display: 'none' }}
                 onChange={handleGalleryUpload}
               />
             </label>
-            <button className="fab-option" onClick={startCamera}>
-              📷 Take Picture
-            </button>
+            <label className="fab-option">
+  📷 Take Picture
+  <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    style={{ display: 'none' }}
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setPhoto(file);
+        uploadFile(file);
+      }
+    }}
+  />
+</label>
           </div>
         )}
       </div>
