@@ -11,12 +11,7 @@ function App() {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const handleGalleryUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      uploadFile(file);
-    }
-  };
+ 
 
   const uploadFile = async (file) => {
     const formData = new FormData();
