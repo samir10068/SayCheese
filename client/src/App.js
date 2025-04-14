@@ -9,7 +9,7 @@ function App() {
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+ 
 
  
 
