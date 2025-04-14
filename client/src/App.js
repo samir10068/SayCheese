@@ -3,12 +3,13 @@ import './App.css'; // You'll add the styles below
 
 function App() {
   const videoRef = useRef();
+ 
   const [, setPhoto] = useState(null);
   const [uploadedURL, setUploadedURL] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
 
- 
+  
 
  
 
@@ -85,12 +86,12 @@ function App() {
       )}
 
       <div className="fab-wrapper">
-      <label className="fab-button">
+       <label className="fab-button">
   ➕
   <input
     type="file"
     accept="image/*"
-    capture="environment"
+    
     style={{ display: 'none' }}
     onChange={(e) => {
       const file = e.target.files[0];
