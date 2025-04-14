@@ -11,12 +11,7 @@ function App() {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const handleGalleryUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      uploadFile(file);
-    }
-  };
+ 
 
   const uploadFile = async (file) => {
     const formData = new FormData();
@@ -90,35 +85,34 @@ function App() {
         </div>
       )}
 
-      {/* open camera  */}
       <div className="fab-wrapper">
-      <button className={`fab-button ${menuOpen ? 'spin' : ''}`} onClick={toggleMenu}>
-        ➕
-        
-      </button>
-      {menuOpen && (
-        <div className="fab-menu">
-          <label className="fab-option">
-📷 Take Picture
-<input
-  type="file"
-  accept="image/*"
-  capture="environment"
-  style={{ display: 'none' }}
-  onChange={(e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setPhoto(file);
-      uploadFile(file);
-    }
-  }}
-/>
+        <button className={`fab-button ${menuOpen ? 'spin' : ''}`} onClick={toggleMenu}>
+          ➕
+          
+        </button>
+        {menuOpen && (
+          <div className="fab-menu">
+            <label className="fab-option">
+  📷 Take Picture
+  <input
+    type="file"
+    accept="image/*"
+
+    style={{ display: 'none' }}
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setPhoto(file);
+        uploadFile(file);
+      }
+    }}
+  />
 </label>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default App;
