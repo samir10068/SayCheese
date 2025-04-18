@@ -7,13 +7,13 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 const GALLERY_PATH = path.join(__dirname, 'gallery.json');
+const MEDIA_FOLDER = 'media';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+app.use(`/${MEDIA_FOLDER}`, express.static(MEDIA_FOLDER));
 
 // Ensure gallery.json exists
 if (!fs.existsSync(GALLERY_PATH)) {
@@ -23,9 +23,8 @@ if (!fs.existsSync(GALLERY_PATH)) {
 // Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = 'uploads';
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-    cb(null, dir);
+    if (!fs.existsSync(MEDIA_FOLDER)) fs.mkdirSync(MEDIA_FOLDER);
+    cb(null, MEDIA_FOLDER);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -36,7 +35,11 @@ const upload = multer({ storage });
 // Upload and save to gallery
 app.post('/api/upload', upload.single('photo'), (req, res) => {
   const id = Date.now().toString();
-  const photoUrl = `${BASE_URL}/uploads/${req.file.filename}`;
+  const host = req.get('host');
+  const protocol = req.protocol;
+  const baseUrl = process.env.BASE_URL || `${protocol}://${host}`;
+  const photoUrl = `${baseUrl}/${MEDIA_FOLDER}/${req.file.filename}`;
+
   const photoData = {
     id,
     url: photoUrl,
@@ -65,7 +68,7 @@ app.delete('/api/photos/:id', (req, res) => {
   const photo = gallery.find(p => p.id === req.params.id);
   if (!photo) return res.status(404).send('Photo not found');
 
-  const filePath = path.join(__dirname, 'uploads', path.basename(photo.url));
+  const filePath = path.join(__dirname, MEDIA_FOLDER, path.basename(photo.url));
   if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
 
   const updatedGallery = gallery.filter(p => p.id !== req.params.id);
@@ -76,5 +79,6 @@ app.delete('/api/photos/:id', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server running at ${BASE_URL}`);
+  const base = process.env.BASE_URL || `http://localhost:${PORT}`;
+  console.log(`✅ Server running at ${base}`);
 });
