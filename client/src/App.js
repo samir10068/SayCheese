@@ -96,7 +96,6 @@ function App() {
           <input
             type="file"
             accept="image/*"
-            capture="environment"
             style={{ display: 'none' }}
             onClick={startCamera}
           />
