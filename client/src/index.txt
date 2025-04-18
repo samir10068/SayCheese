@@ -3,13 +3,13 @@ import './App.css'; // You'll add the styles below
 
 function App() {
   const videoRef = useRef();
-  const [menuOpen, setMenuOpen] = useState(false);
+ 
   const [, setPhoto] = useState(null);
   const [uploadedURL, setUploadedURL] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  
 
  
 
@@ -86,18 +86,12 @@ function App() {
       )}
 
       <div className="fab-wrapper">
-        <button className={`fab-button ${menuOpen ? 'spin' : ''}`} onClick={toggleMenu}>
-          ➕
-          
-        </button>
-        {menuOpen && (
-          <div className="fab-menu">
-            <label className="fab-option">
-  📷 Take Picture
+       <label className="fab-button">
+  ➕
   <input
     type="file"
     accept="image/*"
-
+    
     style={{ display: 'none' }}
     onChange={(e) => {
       const file = e.target.files[0];
@@ -108,8 +102,8 @@ function App() {
     }}
   />
 </label>
-          </div>
-        )}
+
+       
       </div>
     </div>
   );
