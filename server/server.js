@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -5,14 +6,14 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+const GALLERY_PATH = path.join(__dirname, 'gallery.json');
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
-
-const GALLERY_PATH = path.join(__dirname, 'gallery.json');
 
 // Ensure gallery.json exists
 if (!fs.existsSync(GALLERY_PATH)) {
@@ -32,10 +33,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Upload Route + Gallery Save
+// Upload and save to gallery
 app.post('/api/upload', upload.single('photo'), (req, res) => {
   const id = Date.now().toString();
-  const photoUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
+  const photoUrl = `${BASE_URL}/uploads/${req.file.filename}`;
   const photoData = {
     id,
     url: photoUrl,
@@ -58,7 +59,7 @@ app.get('/api/photos', (req, res) => {
   res.json(gallery);
 });
 
-// Delete photo by ID
+// Delete a photo by ID
 app.delete('/api/photos/:id', (req, res) => {
   const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH));
   const photo = gallery.find(p => p.id === req.params.id);
@@ -74,4 +75,6 @@ app.delete('/api/photos/:id', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Server running at ${BASE_URL}`);
+});
