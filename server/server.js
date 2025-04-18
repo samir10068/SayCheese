@@ -15,9 +15,11 @@ app.use('/uploads', express.static('uploads'));
 const GALLERY_PATH = path.join(__dirname, 'gallery.json');
 
 // Ensure gallery.json exists
-if (!fs.existsSync(GALLERY_PATH)) fs.writeFileSync(GALLERY_PATH, JSON.stringify([]));
+if (!fs.existsSync(GALLERY_PATH)) {
+  fs.writeFileSync(GALLERY_PATH, JSON.stringify([]));
+}
 
-// Multer setup
+// Multer storage config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = 'uploads';
@@ -30,7 +32,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Upload route
+// Upload Route + Gallery Save
 app.post('/api/upload', upload.single('photo'), (req, res) => {
   const id = Date.now().toString();
   const photoUrl = `http://localhost:${PORT}/uploads/${req.file.filename}`;
@@ -40,20 +42,23 @@ app.post('/api/upload', upload.single('photo'), (req, res) => {
     uploadedAt: new Date()
   };
 
-  const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH));
+  const gallery = fs.existsSync(GALLERY_PATH)
+    ? JSON.parse(fs.readFileSync(GALLERY_PATH))
+    : [];
+
   gallery.push(photoData);
   fs.writeFileSync(GALLERY_PATH, JSON.stringify(gallery, null, 2));
 
   res.json({ url: photoUrl });
 });
 
-// Get all photos
+// Get all uploaded photos
 app.get('/api/photos', (req, res) => {
   const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH));
   res.json(gallery);
 });
 
-// Delete a photo by ID
+// Delete photo by ID
 app.delete('/api/photos/:id', (req, res) => {
   const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH));
   const photo = gallery.find(p => p.id === req.params.id);
@@ -69,4 +74,4 @@ app.delete('/api/photos/:id', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
