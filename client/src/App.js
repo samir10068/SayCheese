@@ -1,13 +1,30 @@
 import React, { useRef, useState } from 'react';
-import './App.css';
+import './App.css'; // You'll add the styles below
 
 function App() {
   const videoRef = useRef();
-  const [photoBlob, setPhotoBlob] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState(null);
+ 
+  const [, setPhoto] = useState(null);
   const [uploadedURL, setUploadedURL] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
+
+  
+
+ 
+
+  const uploadFile = async (file) => {
+    const formData = new FormData();
+    formData.append('photo', file);
+
+    const res = await fetch('https://saycheese-0cp0.onrender.com/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await res.json();
+    setUploadedURL(data.url);
+  };
 
   const startCamera = async () => {
     setShowCamera(true);
@@ -38,34 +55,12 @@ function App() {
     ctx.drawImage(videoRef.current, 0, 0, 400, 300);
     canvas.toBlob(blob => {
       if (blob) {
-        setPhotoBlob(blob);
-        setPhotoPreview(URL.createObjectURL(blob));
+        setPhoto(blob);
+        uploadFile(blob);
         stopCamera();
         setShowCamera(false);
       }
     }, 'image/jpeg');
-  };
-
-  const uploadPhoto = async () => {
-    if (!photoBlob) return;
-    const formData = new FormData();
-    formData.append('photo', photoBlob);
-
-    const res = await fetch('https://saycheese-0cp0.onrender.com/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const data = await res.json();
-    setUploadedURL(data.url);
-    setPhotoBlob(null);
-    setPhotoPreview(null);
-  };
-
-  const retakePhoto = () => {
-    setPhotoBlob(null);
-    setPhotoPreview(null);
-    startCamera();
   };
 
   return (
@@ -90,28 +85,26 @@ function App() {
         </div>
       )}
 
-      {!showCamera && !photoPreview && !uploadedURL && (
-        <label className="fab-button">
-          ➕
-          <input
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onClick={startCamera}
-          />
-        </label>
-      )}
+      <div className="fab-wrapper">
+       <label className="fab-button">
+  ➕
+  <input
+    type="file"
+    accept="image/*"
+    
+    style={{ display: 'none' }}
+    onChange={(e) => {
+      const file = e.target.files[0];
+      if (file) {
+        setPhoto(file);
+        uploadFile(file);
+      }
+    }}
+  />
+</label>
 
-      {photoPreview && (
-        <div>
-          <h2>Preview:</h2>
-          <img src={photoPreview} alt="Preview" width="300" />
-          <div style={{ marginTop: '10px' }}>
-            <button onClick={uploadPhoto}>✅ Upload</button>
-            <button onClick={retakePhoto}>🔁 Retake</button>
-          </div>
-        </div>
-      )}
+       
+      </div>
     </div>
   );
 }
