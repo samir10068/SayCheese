@@ -92,3 +92,12 @@
 .camera-buttons button {
   margin: 5px;
 }
+.blur-md {
+  filter: blur(6px);
+}
+.bg-cover {
+  background-size: cover;
+}
+.bg-center {
+  background-position: center;
+}

@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import './App.css';
 
-function App() {
+function PhotoUploader() {
   const videoRef = useRef();
   const [, setPhoto] = useState(null);
   const [uploadedURL, setUploadedURL] = useState('');
@@ -9,6 +8,7 @@ function App() {
   const [facingMode, setFacingMode] = useState('user');
   const [backgroundUrl, setBackgroundUrl] = useState('');
 
+  // 🔄 Load background image from server
   useEffect(() => {
     const fetchBg = async () => {
       try {
@@ -16,7 +16,7 @@ function App() {
         const data = await res.json();
         setBackgroundUrl(data.url);
       } catch (err) {
-        console.error('Error fetching background:', err);
+        console.error('Failed to fetch background', err);
       }
     };
     fetchBg();
@@ -74,6 +74,7 @@ function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
+      {/* 🔳 Background layer */}
       {backgroundUrl && (
         <div
           className="absolute inset-0 bg-cover bg-center blur-md scale-105"
@@ -81,7 +82,8 @@ function App() {
         />
       )}
 
-      <div className="relative z-10 flex flex-col items-center justify-start text-white p-4">
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center justify-start p-4 text-white">
         <h1 className="text-3xl font-bold mb-4">Say Cheese 📸</h1>
 
         {uploadedURL && (
@@ -125,4 +127,4 @@ function App() {
   );
 }
 
-export default App;
+export default PhotoUploader;
