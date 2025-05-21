@@ -91,9 +91,11 @@ return (
         }}
       />
     )}
-
-    {/* 🔲 Foreground content */}
     <div className="relative z-10 p-4 text-white">
+      <h1>Say Cheese 📸</h1>
+      </div>
+    {/* 🔲 Foreground content */}
+    <div className="relative z-10 p-4 text-green">
       <h1>Say Cheese 📸</h1>
 
       {uploadedURL && (
