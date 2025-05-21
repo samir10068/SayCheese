@@ -74,29 +74,33 @@ function PhotoUploader() {
   };
 
 return (
-  <div className="relative w-full h-screen overflow-hidden">
-    {/* 🔳 Blurred background layer */}
+  <div className="relative w-full min-h-screen overflow-hidden">
+    {/* Background layer */}
     {backgroundUrl && (
       <div
         className="absolute inset-0"
-    style={{
-      backgroundImage: `url(${backgroundUrl})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      filter: 'blur(8px)',
-      width: '100%',
-      height: '100%',
-      position: 'absolute',
-      zIndex: 0,
+        style={{
+          backgroundImage: `url(${backgroundUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(8px)',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          zIndex: 0,
         }}
       />
     )}
+
+    {/* Optional overlay */}
+    <div
+      className="absolute inset-0 bg-black opacity-40"
+      style={{ zIndex: 1 }}
+    ></div>
+
+    {/* Foreground content */}
     <div className="relative z-10 p-4 text-white">
-      <h1>Say Cheese 📸</h1>
-      </div>
-    {/* 🔲 Foreground content */}
-    <div className="relative z-10 p-4 text-green">
-      <h1>Say Cheese 📸</h1>
+      <h1 className="text-3xl font-bold mb-4">Say Cheese 📸</h1>
 
       {uploadedURL && (
         <div>
