@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import './App.css';
 
 function PhotoUploader() {
   const videoRef = useRef();
@@ -8,18 +9,18 @@ function PhotoUploader() {
   const [facingMode, setFacingMode] = useState('user');
   const [backgroundUrl, setBackgroundUrl] = useState('');
 
-  // 🔄 Load background image from server
   useEffect(() => {
-    const fetchBg = async () => {
+    const fetchBackground = async () => {
       try {
         const res = await fetch('https://saycheese-0cp0.onrender.com/api/background');
         const data = await res.json();
         setBackgroundUrl(data.url);
+        console.log('Loaded background:', data.url);
       } catch (err) {
-        console.error('Failed to fetch background', err);
+        console.error('Failed to fetch background:', err);
       }
     };
-    fetchBg();
+    fetchBackground();
   }, []);
 
   const uploadFile = async (file) => {
@@ -73,18 +74,20 @@ function PhotoUploader() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* 🔳 Background layer */}
-      {backgroundUrl && (
-        <div
-          className="absolute inset-0 bg-cover bg-center blur-md scale-105"
-          style={{ backgroundImage: `url(${backgroundUrl})`, zIndex: 0 }}
-        />
-      )}
-
-      {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center justify-start p-4 text-white">
-        <h1 className="text-3xl font-bold mb-4">Say Cheese 📸</h1>
+    <div
+      className="app-container"
+      style={{
+        backgroundImage: `url(${backgroundUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        filter: 'blur(8px)',
+        padding: 20,
+        minHeight: '100vh',
+        color: 'white',
+      }}
+    >
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        <h1>Say Cheese 📸</h1>
 
         {uploadedURL && (
           <div>
@@ -120,7 +123,7 @@ function PhotoUploader() {
               }}
             />
           </label>
-          <button onClick={startCamera} className="ml-2">📷 Use Camera</button>
+          <button onClick={startCamera} style={{ marginLeft: 10 }}>📷 Use Camera</button>
         </div>
       </div>
     </div>
