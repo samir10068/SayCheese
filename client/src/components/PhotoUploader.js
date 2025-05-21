@@ -135,22 +135,47 @@ function PhotoUploader() {
           </div>
         )}
 
-        <div className="fab-wrapper mt-4">
-          <label className="fab-button">
-            ➕
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  setPhoto(file);
-                  uploadFile(file);
-                }
-              }}
-            />
-          </label>
+       {/* 📸 Floating Action Button */}
+<div
+  style={{
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    zIndex: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }}
+>
+  <label
+    style={{
+      backgroundColor: '#007bff',
+      color: '#fff',
+      fontSize: '2rem',
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+    }}
+  >
+    ➕
+    <input
+      type="file"
+      accept="image/*"
+      style={{ display: 'none' }}
+      onChange={(e) => {
+        const file = e.target.files[0];
+        if (file) {
+          setPhoto(file);
+          uploadFile(file);
+        }
+      }}
+    />
+  </label>
 
         </div>
       </div>
