@@ -6,9 +6,42 @@ const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const GALLERY_PATH = path.join(__dirname, 'gallery.json');
+const BACKGROUND_PATH = path.join(__dirname, 'background.json');
+
+// Ensure background.json exists
+if (!fs.existsSync(BACKGROUND_PATH)) {
+  fs.writeFileSync(BACKGROUND_PATH, JSON.stringify({ url: '' }));
+}
+
+// Upload background image
+app.post('/api/background', upload.single('photo'), async (req, res) => {
+  try {
+    const localPath = req.file.path;
+    const result = await cloudinary.uploader.upload(localPath, {
+      folder: 'saycheese/backgrounds',
+    });
+    fs.unlinkSync(localPath);
+
+    const newBackground = { url: result.secure_url };
+    fs.writeFileSync(BACKGROUND_PATH, JSON.stringify(newBackground, null, 2));
+
+    res.json(newBackground);
+  } catch (err) {
+    console.error('Background upload error:', err);
+    res.status(500).send('Background upload failed');
+  }
+});
+
+app.get('/api/background', (req, res) => {
+  const data = JSON.parse(fs.readFileSync(BACKGROUND_PATH));
+  res.json(data);
+});
+
 
 // Cloudinary config
 cloudinary.config({

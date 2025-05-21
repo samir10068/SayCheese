@@ -4,6 +4,8 @@ function AdminGallery() {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [backgroundURL, setBackgroundURL] = useState('');
+  const [bgUploading, setBgUploading] = useState(false);
 
   const fetchPhotos = async () => {
     setLoading(true);
@@ -17,6 +19,16 @@ function AdminGallery() {
     setLoading(false);
   };
 
+  const fetchBackground = async () => {
+    try {
+      const res = await fetch('https://saycheese-0cp0.onrender.com/api/background');
+      const data = await res.json();
+      setBackgroundURL(data.url);
+    } catch (err) {
+      console.error('Failed to load background');
+    }
+  };
+
   const deletePhoto = async (id) => {
     try {
       await fetch(`https://saycheese-0cp0.onrender.com/api/photos/${id}`, {
@@ -28,13 +40,49 @@ function AdminGallery() {
     }
   };
 
+  const handleBackgroundUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setBgUploading(true);
+    const formData = new FormData();
+    formData.append('photo', file);
+
+    try {
+      const res = await fetch('https://saycheese-0cp0.onrender.com/api/background', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      setBackgroundURL(data.url);
+      alert('Background updated successfully!');
+    } catch (err) {
+      alert('Failed to upload background');
+    }
+    setBgUploading(false);
+  };
+
   useEffect(() => {
     fetchPhotos();
+    fetchBackground();
   }, []);
 
   return (
     <div className="admin-gallery" style={{ padding: 20 }}>
       <h1>📁 Admin Gallery</h1>
+
+      <div style={{ marginBottom: 40 }}>
+        <h2>🌄 Change Homepage Background</h2>
+        <input type="file" accept="image/*" onChange={handleBackgroundUpload} />
+        {bgUploading && <p>Uploading...</p>}
+        {backgroundURL && (
+          <div style={{ marginTop: 10 }}>
+            <p>Current Background:</p>
+            <img src={backgroundURL} alt="Background" style={{ width: 300, borderRadius: 8 }} />
+          </div>
+        )}
+      </div>
+
       {loading && <p>Loading photos...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 

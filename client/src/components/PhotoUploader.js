@@ -1,17 +1,26 @@
-import React, { useRef, useState } from 'react';
-import './App.css'; // You'll add the styles below
+import React, { useRef, useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const videoRef = useRef();
- 
   const [, setPhoto] = useState(null);
   const [uploadedURL, setUploadedURL] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
+  const [backgroundUrl, setBackgroundUrl] = useState('');
 
-  
-
- 
+  useEffect(() => {
+    const fetchBg = async () => {
+      try {
+        const res = await fetch('https://saycheese-0cp0.onrender.com/api/background');
+        const data = await res.json();
+        setBackgroundUrl(data.url);
+      } catch (err) {
+        console.error('Error fetching background:', err);
+      }
+    };
+    fetchBg();
+  }, []);
 
   const uploadFile = async (file) => {
     const formData = new FormData();
@@ -64,46 +73,53 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <h1>Say Cheese 📸</h1>
-
-      {uploadedURL && (
-        <div>
-          <h2>Uploaded Image:</h2>
-          <img src={uploadedURL} alt="Uploaded" width="300" />
-        </div>
+    <div className="relative w-full h-screen overflow-hidden">
+      {backgroundUrl && (
+        <div
+          className="absolute inset-0 bg-cover bg-center blur-md scale-105"
+          style={{ backgroundImage: `url(${backgroundUrl})`, zIndex: 0 }}
+        />
       )}
 
-      {showCamera && (
-        <div className="camera-container">
-          <video ref={videoRef} autoPlay playsInline width="400" height="300" />
-          <div className="camera-buttons">
-            <button onClick={takePhoto}>📸 Take Photo</button>
-            <button onClick={switchCamera}>🔄 Switch Camera</button>
-            <button onClick={() => { stopCamera(); setShowCamera(false); }}>❌ Close</button>
+      <div className="relative z-10 flex flex-col items-center justify-start text-white p-4">
+        <h1 className="text-3xl font-bold mb-4">Say Cheese 📸</h1>
+
+        {uploadedURL && (
+          <div>
+            <h2>Uploaded Image:</h2>
+            <img src={uploadedURL} alt="Uploaded" width="300" />
           </div>
+        )}
+
+        {showCamera && (
+          <div className="camera-container">
+            <video ref={videoRef} autoPlay playsInline width="400" height="300" />
+            <div className="camera-buttons">
+              <button onClick={takePhoto}>📸 Take Photo</button>
+              <button onClick={switchCamera}>🔄 Switch Camera</button>
+              <button onClick={() => { stopCamera(); setShowCamera(false); }}>❌ Close</button>
+            </div>
+          </div>
+        )}
+
+        <div className="fab-wrapper mt-4">
+          <label className="fab-button">
+            ➕
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setPhoto(file);
+                  uploadFile(file);
+                }
+              }}
+            />
+          </label>
+          <button onClick={startCamera} className="ml-2">📷 Use Camera</button>
         </div>
-      )}
-
-      <div className="fab-wrapper">
-       <label className="fab-button">
-  ➕
-  <input
-    type="file"
-    accept="image/*"
-    
-    style={{ display: 'none' }}
-    onChange={(e) => {
-      const file = e.target.files[0];
-      if (file) {
-        setPhoto(file);
-        uploadFile(file);
-      }
-    }}
-  />
-</label>
-
-       
       </div>
     </div>
   );
