@@ -73,61 +73,66 @@ function PhotoUploader() {
     }, 'image/jpeg');
   };
 
-  return (
-    <div
-      className="app-container"
-      style={{
-        backgroundImage: `url(${backgroundUrl})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        filter: 'blur(8px)',
-        padding: 20,
-        minHeight: '100vh',
-        color: 'white',
-      }}
-    >
-      <div style={{ position: 'relative', zIndex: 2 }}>
-        <h1>Say Cheese 📸</h1>
+return (
+  <div className="relative w-full h-screen overflow-hidden">
+    {/* 🔳 Blurred background layer */}
+    {backgroundUrl && (
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url(${backgroundUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'blur(8px)',
+          zIndex: 0,
+        }}
+      />
+    )}
 
-        {uploadedURL && (
-          <div>
-            <h2>Uploaded Image:</h2>
-            <img src={uploadedURL} alt="Uploaded" width="300" />
-          </div>
-        )}
+    {/* 🔲 Foreground content */}
+    <div className="relative z-10 p-4 text-white">
+      <h1>Say Cheese 📸</h1>
 
-        {showCamera && (
-          <div className="camera-container">
-            <video ref={videoRef} autoPlay playsInline width="400" height="300" />
-            <div className="camera-buttons">
-              <button onClick={takePhoto}>📸 Take Photo</button>
-              <button onClick={switchCamera}>🔄 Switch Camera</button>
-              <button onClick={() => { stopCamera(); setShowCamera(false); }}>❌ Close</button>
-            </div>
-          </div>
-        )}
-
-        <div className="fab-wrapper mt-4">
-          <label className="fab-button">
-            ➕
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  setPhoto(file);
-                  uploadFile(file);
-                }
-              }}
-            />
-          </label>
-          <button onClick={startCamera} style={{ marginLeft: 10 }}>📷 Use Camera</button>
+      {uploadedURL && (
+        <div>
+          <h2>Uploaded Image:</h2>
+          <img src={uploadedURL} alt="Uploaded" width="300" />
         </div>
+      )}
+
+      {showCamera && (
+        <div className="camera-container">
+          <video ref={videoRef} autoPlay playsInline width="400" height="300" />
+          <div className="camera-buttons">
+            <button onClick={takePhoto}>📸 Take Photo</button>
+            <button onClick={switchCamera}>🔄 Switch Camera</button>
+            <button onClick={() => { stopCamera(); setShowCamera(false); }}>❌ Close</button>
+          </div>
+        </div>
+      )}
+
+      <div className="fab-wrapper mt-4">
+        <label className="fab-button">
+          ➕
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                setPhoto(file);
+                uploadFile(file);
+              }
+            }}
+          />
+        </label>
+        <button onClick={startCamera} style={{ marginLeft: 10 }}>📷 Use Camera</button>
       </div>
     </div>
-  );
+  </div>
+);
+
 }
 
 export default PhotoUploader;
