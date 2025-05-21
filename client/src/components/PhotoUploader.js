@@ -151,7 +151,7 @@ function PhotoUploader() {
               }}
             />
           </label>
-          <button onClick={startCamera} style={{ marginLeft: 10 }}>📷 Use Camera</button>
+
         </div>
       </div>
     </div>
