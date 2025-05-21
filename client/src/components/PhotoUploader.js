@@ -79,12 +79,15 @@ return (
     {backgroundUrl && (
       <div
         className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${backgroundUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(8px)',
-          zIndex: 0,
+    style={{
+      backgroundImage: `url(${backgroundUrl})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      filter: 'blur(8px)',
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      zIndex: 0,
         }}
       />
     )}
