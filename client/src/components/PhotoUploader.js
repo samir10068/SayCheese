@@ -80,7 +80,7 @@ function PhotoUploader() {
             backgroundImage: `url(${backgroundUrl})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            filter: 'blur(8px)',
+            filter: 'blur(0px)',
             position: 'absolute',
             top: 0,
             left: 0,
