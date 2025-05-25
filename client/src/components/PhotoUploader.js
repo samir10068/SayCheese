@@ -99,6 +99,16 @@ function PhotoUploader() {
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.6);
           }
         }
+
+        @media (max-width: 768px) {
+          .responsive-heading {
+            font-size: 1.5rem !important;
+            padding: 6px 12px !important;
+          }
+          .responsive-names {
+            font-size: 1.8rem !important;
+          }
+        }
       `}</style>
 
       {/* Background Image */}
@@ -134,6 +144,7 @@ function PhotoUploader() {
 
       {/* Animated Arabic Heading */}
       <div
+        className="responsive-heading"
         style={{
           position: 'absolute',
           top: '30px',
@@ -151,12 +162,13 @@ function PhotoUploader() {
           zIndex: 10
         }}
       >
-       💖 ومن هون بتبلش الذكريات 💖
+        ومن هون بتبلش الذكريات
       </div>
 
       {/* Centered Names & Symbol */}
       {topName && bottomName && (
         <div
+          className="responsive-names"
           style={{
             textAlign: 'center',
             fontFamily: font,
