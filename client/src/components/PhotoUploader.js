@@ -90,6 +90,17 @@ function PhotoUploader() {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
+      <style>{`
+        @keyframes pulseGlow {
+          0%, 100% {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+          }
+          50% {
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 30px rgba(255, 255, 255, 0.6);
+          }
+        }
+      `}</style>
+
       {/* Background Image */}
       {backgroundUrl && (
         <div
@@ -121,7 +132,7 @@ function PhotoUploader() {
         }}
       />
 
-      {/* Stylized Arabic Heading */}
+      {/* Animated Arabic Heading */}
       <div
         style={{
           position: 'absolute',
@@ -136,11 +147,11 @@ function PhotoUploader() {
           padding: '10px 20px',
           background: 'rgba(0, 0, 0, 0.3)',
           borderRadius: '12px',
-          boxShadow: '0 0 15px rgba(255,255,255,0.4)',
+          animation: 'pulseGlow 3s ease-in-out infinite',
           zIndex: 10
         }}
       >
-        ومن هون بتبلش الذكريات
+       💖 ومن هون بتبلش الذكريات 💖
       </div>
 
       {/* Centered Names & Symbol */}
