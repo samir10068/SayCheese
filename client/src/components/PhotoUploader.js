@@ -90,7 +90,7 @@ function PhotoUploader() {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
-      {/* 🔳 Background */}
+      {/* Background Image */}
       {backgroundUrl && (
         <div
           style={{
@@ -108,7 +108,7 @@ function PhotoUploader() {
         />
       )}
 
-      {/* 🌓 Overlay */}
+      {/* Dark Overlay */}
       <div
         style={{
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -121,7 +121,7 @@ function PhotoUploader() {
         }}
       />
 
-      {/* 💍 Names & Symbol */}
+      {/* Centered Names & Symbol */}
       {topName && bottomName && (
         <div
           style={{
@@ -144,27 +144,27 @@ function PhotoUploader() {
         </div>
       )}
 
-      {/* 💬 Animated Arabic Heading */}
+      {/* Arabic Animated Heading */}
       <div
-  style={{
-    position: 'relative',
-    top: '30px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    textAlign: 'center',
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    color: 'green',
-    padding: 20,
-    textShadow: '0 0 8px rgba(0,0,0,0.8)',
-    zIndex: 5,
-    opacity: 0,
-    animation: 'fadeSlideIn 1.5s ease-out forwards'
-  }}
->
-  ومن هون بتبلش الذكريات
-</div>
-      {/* 📸 Main Content */}
+        style={{
+          position: 'absolute',
+          top: '30px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          textAlign: 'center',
+          fontSize: '2rem',
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '0 0 8px rgba(0,0,0,0.8)',
+          zIndex: 5,
+          opacity: 0,
+          animation: 'fadeSlideIn 1.5s ease-out forwards'
+        }}
+      >
+        ومن هون بتبلش الذكريات
+      </div>
+
+      {/* Foreground Content */}
       <div
         style={{
           position: 'relative',
@@ -191,7 +191,7 @@ function PhotoUploader() {
           </div>
         )}
 
-        {/* ➕ Floating Upload */}
+        {/* Floating Upload Button */}
         <div
           style={{
             position: 'fixed',
