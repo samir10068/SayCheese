@@ -121,7 +121,7 @@ function PhotoUploader() {
         }}
       />
 
-      {/* Animated Arabic Heading at Top Center */}
+      {/* Static Arabic Heading at Top Center */}
       <div
         style={{
           position: 'absolute',
@@ -134,8 +134,7 @@ function PhotoUploader() {
           color: 'white',
           textShadow: '0 0 8px rgba(0,0,0,0.8)',
           zIndex: 10,
-          opacity: 0,
-          animation: 'fadeSlideIn 1.5s ease-out forwards'
+          opacity: 1
         }}
       >
         ومن هون بتبلش الذكريات
