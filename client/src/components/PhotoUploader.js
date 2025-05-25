@@ -121,7 +121,7 @@ function PhotoUploader() {
         }}
       />
 
-      {/* Static Arabic Heading at Top Center */}
+      {/* Stylized Arabic Heading */}
       <div
         style={{
           position: 'absolute',
@@ -129,12 +129,15 @@ function PhotoUploader() {
           left: '50%',
           transform: 'translateX(-50%)',
           textAlign: 'center',
-          fontSize: '2rem',
+          fontSize: '2.5rem',
           fontWeight: 'bold',
-          color: 'white',
-          textShadow: '0 0 8px rgba(0,0,0,0.8)',
-          zIndex: 10,
-          opacity: 1
+          fontFamily: '"Cairo", sans-serif',
+          color: '#fff',
+          padding: '10px 20px',
+          background: 'rgba(0, 0, 0, 0.3)',
+          borderRadius: '12px',
+          boxShadow: '0 0 15px rgba(255,255,255,0.4)',
+          zIndex: 10
         }}
       >
         ومن هون بتبلش الذكريات
