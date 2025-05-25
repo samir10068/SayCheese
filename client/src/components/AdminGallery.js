@@ -115,33 +115,7 @@ function AdminGallery() {
       </div>
 
       {/* Name/Font editor */}
-      <div style={{ marginBottom: 40 }}>
-        <h2>💍 Customize Names and Font</h2>
-        <input
-          type="text"
-          placeholder="Top Name"
-          value={topName}
-          onChange={e => setTopName(e.target.value)}
-          style={{ marginRight: 10, padding: 6 }}
-        />
-        <input
-          type="text"
-          placeholder="Bottom Name"
-          value={bottomName}
-          onChange={e => setBottomName(e.target.value)}
-          style={{ marginRight: 10, padding: 6 }}
-        />
-        <select value={font} onChange={e => setFont(e.target.value)} style={{ padding: 6 }}>
-          <option value="Arial">Arial</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Pacifico">Pacifico</option>
-          <option value="Playfair Display">Playfair Display</option>
-          <option value="Times New Roman">Times New Roman</option>
-        </select>
-        <button onClick={updateNames} style={{ marginLeft: 10, padding: '6px 12px' }}>
-          💾 Save Names
-        </button>
-      </div>
+
 <div style={{ marginBottom: 40 }}>
   <h2>💍 Customize Names and Font</h2>
   <input
