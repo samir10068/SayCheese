@@ -147,14 +147,15 @@ function PhotoUploader() {
       {/* 💬 Animated Arabic Heading */}
       <div
   style={{
-    position: 'absolute',
+    position: 'relative',
     top: '30px',
     left: '50%',
     transform: 'translateX(-50%)',
     textAlign: 'center',
     fontSize: '2rem',
     fontWeight: 'bold',
-    color: 'white',
+    color: 'green',
+    padding: 20,
     textShadow: '0 0 8px rgba(0,0,0,0.8)',
     zIndex: 5,
     opacity: 0,
