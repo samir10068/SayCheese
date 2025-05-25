@@ -90,7 +90,7 @@ function PhotoUploader() {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
-      {/* 🔳 Background Image Layer */}
+      {/* 🔳 Background */}
       {backgroundUrl && (
         <div
           style={{
@@ -108,7 +108,7 @@ function PhotoUploader() {
         />
       )}
 
-      {/* 🌓 Optional Dark Overlay */}
+      {/* 🌓 Overlay */}
       <div
         style={{
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -121,7 +121,7 @@ function PhotoUploader() {
         }}
       />
 
-      {/* 💍 Centered Names & Symbol */}
+      {/* 💍 Names & Symbol */}
       {topName && bottomName && (
         <div
           style={{
@@ -144,7 +144,27 @@ function PhotoUploader() {
         </div>
       )}
 
-      {/* 🔲 Foreground Content */}
+      {/* 💬 Animated Arabic Heading */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '55%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          textAlign: 'center',
+          fontSize: '2rem',
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '0 0 8px rgba(0,0,0,0.8)',
+          zIndex: 3,
+          opacity: 0,
+          animation: 'fadeSlideIn 2s ease-out forwards'
+        }}
+      >
+        ومن هون بتبلش الذكريات
+      </div>
+
+      {/* 📸 Main Content */}
       <div
         style={{
           position: 'relative',
@@ -153,25 +173,6 @@ function PhotoUploader() {
           color: 'white',
         }}
       >
-    <div
-  style={{
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    textAlign: 'center',
-    zIndex: 3,
-    color: 'white',
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    textShadow: '0 0 8px rgba(0,0,0,0.7)',
-    opacity: 0,
-    animation: 'fadeSlideIn 2s ease-out forwards'
-  }}
->
-  ومن هون بتبلش الذكريات
-</div>
-
         {uploadedURL && (
           <div>
             <h2>Uploaded Image:</h2>
@@ -190,7 +191,7 @@ function PhotoUploader() {
           </div>
         )}
 
-        {/* 📸 Floating Action Button */}
+        {/* ➕ Floating Upload */}
         <div
           style={{
             position: 'fixed',
