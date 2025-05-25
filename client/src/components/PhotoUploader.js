@@ -121,6 +121,26 @@ function PhotoUploader() {
         }}
       />
 
+      {/* Animated Arabic Heading at Top Center */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '30px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          textAlign: 'center',
+          fontSize: '2rem',
+          fontWeight: 'bold',
+          color: 'white',
+          textShadow: '0 0 8px rgba(0,0,0,0.8)',
+          zIndex: 10,
+          opacity: 0,
+          animation: 'fadeSlideIn 1.5s ease-out forwards'
+        }}
+      >
+        ومن هون بتبلش الذكريات
+      </div>
+
       {/* Centered Names & Symbol */}
       {topName && bottomName && (
         <div
@@ -143,26 +163,6 @@ function PhotoUploader() {
           <div>{bottomName}</div>
         </div>
       )}
-
-      {/* Arabic Animated Heading */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '30px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          textAlign: 'center',
-          fontSize: '2rem',
-          fontWeight: 'bold',
-          color: 'white',
-          textShadow: '0 0 8px rgba(0,0,0,0.8)',
-          zIndex: 5,
-          opacity: 0,
-          animation: 'fadeSlideIn 1.5s ease-out forwards'
-        }}
-      >
-       <h1>ومن هون بتبلش الذكريات</h1> 
-      </div>
 
       {/* Foreground Content */}
       <div
