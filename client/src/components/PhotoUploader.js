@@ -153,9 +153,24 @@ function PhotoUploader() {
           color: 'white',
         }}
       >
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: 20 }}>
-          Say Cheese 📸
-        </h1>
+    <div
+  style={{
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    textAlign: 'center',
+    zIndex: 3,
+    color: 'white',
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    textShadow: '0 0 8px rgba(0,0,0,0.7)',
+    opacity: 0,
+    animation: 'fadeSlideIn 2s ease-out forwards'
+  }}
+>
+  ومن هون بتبلش الذكريات
+</div>
 
         {uploadedURL && (
           <div>

@@ -113,3 +113,13 @@
   z-index: 0;
   background-color: rgba(0, 0, 0, 0.4); /* Optional dark overlay */
 }
+@keyframes fadeSlideIn {
+  0% {
+    transform: translate(-50%, -40%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+}
