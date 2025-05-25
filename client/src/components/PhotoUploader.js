@@ -161,7 +161,7 @@ function PhotoUploader() {
           animation: 'fadeSlideIn 1.5s ease-out forwards'
         }}
       >
-        ومن هون بتبلش الذكريات
+       <h1>ومن هون بتبلش الذكريات</h1> 
       </div>
 
       {/* Foreground Content */}
