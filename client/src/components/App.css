@@ -115,11 +115,12 @@
 }
 @keyframes fadeSlideIn {
   0% {
-    transform: translate(-50%, -40%);
+    transform: translateX(-50%) translateY(-20px);
     opacity: 0;
   }
   100% {
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 }
+

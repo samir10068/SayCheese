@@ -146,24 +146,23 @@ function PhotoUploader() {
 
       {/* 💬 Animated Arabic Heading */}
       <div
-        style={{
-          position: 'absolute',
-          top: '55%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          textAlign: 'center',
-          fontSize: '2rem',
-          fontWeight: 'bold',
-          color: 'white',
-          textShadow: '0 0 8px rgba(0,0,0,0.8)',
-          zIndex: 3,
-          opacity: 0,
-          animation: 'fadeSlideIn 2s ease-out forwards'
-        }}
-      >
-        ومن هون بتبلش الذكريات
-      </div>
-
+  style={{
+    position: 'absolute',
+    top: '30px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    textAlign: 'center',
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    color: 'white',
+    textShadow: '0 0 8px rgba(0,0,0,0.8)',
+    zIndex: 5,
+    opacity: 0,
+    animation: 'fadeSlideIn 1.5s ease-out forwards'
+  }}
+>
+  ومن هون بتبلش الذكريات
+</div>
       {/* 📸 Main Content */}
       <div
         style={{
