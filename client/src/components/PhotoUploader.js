@@ -7,6 +7,9 @@ function PhotoUploader() {
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
   const [backgroundUrl, setBackgroundUrl] = useState('');
+  const [topName, setTopName] = useState('');
+  const [bottomName, setBottomName] = useState('');
+  const [font, setFont] = useState('Arial');
 
   useEffect(() => {
     const fetchBackground = async () => {
@@ -18,7 +21,21 @@ function PhotoUploader() {
         console.error('Failed to fetch background:', err);
       }
     };
+
+    const fetchNames = async () => {
+      try {
+        const res = await fetch('https://saycheese-0cp0.onrender.com/api/names');
+        const data = await res.json();
+        setTopName(data.topName);
+        setBottomName(data.bottomName);
+        setFont(data.font || 'Arial');
+      } catch (err) {
+        console.error('Failed to fetch names:', err);
+      }
+    };
+
     fetchBackground();
+    fetchNames();
   }, []);
 
   const uploadFile = async (file) => {
@@ -104,6 +121,29 @@ function PhotoUploader() {
         }}
       />
 
+      {/* 💍 Centered Names & Symbol */}
+      {topName && bottomName && (
+        <div
+          style={{
+            textAlign: 'center',
+            fontFamily: font,
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            position: 'absolute',
+            top: '40%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: 'white',
+            textShadow: '0 0 8px rgba(0,0,0,0.8)',
+            zIndex: 3,
+          }}
+        >
+          <div>{topName}</div>
+          <div style={{ fontSize: '3rem' }}>&</div>
+          <div>{bottomName}</div>
+        </div>
+      )}
+
       {/* 🔲 Foreground Content */}
       <div
         style={{
@@ -135,48 +175,47 @@ function PhotoUploader() {
           </div>
         )}
 
-       {/* 📸 Floating Action Button */}
-<div
-  style={{
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    zIndex: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  }}
->
-  <label
-    style={{
-      backgroundColor: '#007bff',
-      color: '#fff',
-      fontSize: '2rem',
-      width: '60px',
-      height: '60px',
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: 'pointer',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-    }}
-  >
-    ➕
-    <input
-      type="file"
-      accept="image/*"
-      style={{ display: 'none' }}
-      onChange={(e) => {
-        const file = e.target.files[0];
-        if (file) {
-          setPhoto(file);
-          uploadFile(file);
-        }
-      }}
-    />
-  </label>
-
+        {/* 📸 Floating Action Button */}
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <label
+            style={{
+              backgroundColor: '#007bff',
+              color: '#fff',
+              fontSize: '2rem',
+              width: '60px',
+              height: '60px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+            }}
+          >
+            ➕
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setPhoto(file);
+                  uploadFile(file);
+                }
+              }}
+            />
+          </label>
         </div>
       </div>
     </div>
