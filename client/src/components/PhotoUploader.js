@@ -154,6 +154,7 @@ function PhotoUploader() {
           fontFamily: '"Cairo", sans-serif',
           color: '#fff',
           padding: '10px 20px',
+          background: 'rgba(0, 0, 0, 0.3)',
           borderRadius: '12px',
           animation: 'pulseGlow 3s ease-in-out infinite',
           zIndex: 10
