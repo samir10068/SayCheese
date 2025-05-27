@@ -3,7 +3,6 @@ import React, { useRef, useState, useEffect } from 'react';
 function PhotoUploader() {
   const videoRef = useRef();
   const [, setPhoto] = useState(null);
-  const [uploadedURL, setUploadedURL] = useState('');
   const [showCamera, setShowCamera] = useState(false);
   const [facingMode, setFacingMode] = useState('user');
   const [backgroundUrl, setBackgroundUrl] = useState('');
@@ -42,22 +41,36 @@ function PhotoUploader() {
     const formData = new FormData();
     formData.append('photo', file);
 
-    const res = await fetch('https://saycheese-0cp0.onrender.com/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
+    try {
+      const res = await fetch('https://saycheese-0cp0.onrender.com/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
 
-    const data = await res.json();
-    setUploadedURL(data.url);
+      if (res.ok) {
+        const data = await res.json();
+        alert('📸 Image uploaded successfully!');
+      } else {
+        alert('❌ Failed to upload image.');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('❌ An error occurred during upload.');
+    }
   };
 
   const startCamera = async () => {
     setShowCamera(true);
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode },
-      audio: false,
-    });
-    videoRef.current.srcObject = stream;
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode },
+        audio: false,
+      });
+      videoRef.current.srcObject = stream;
+    } catch (error) {
+      console.error('Camera access error:', error);
+      alert('❌ Unable to access camera.');
+    }
   };
 
   const stopCamera = () => {
@@ -159,10 +172,9 @@ function PhotoUploader() {
           animation: 'pulseGlow 3s ease-in-out infinite',
           zIndex: 10
         }}
-      
       >
-  <div style={{ fontSize: '2.2rem', marginBottom: '5px' }}>Say cheese</div>
-  <div style={{ fontSize: '1.8rem' }}>لنوثق معاً ذكريات لا تنسى</div>
+        <div style={{ fontSize: '2.2rem', marginBottom: '5px' }}>Say cheese</div>
+        <div style={{ fontSize: '1.8rem' }}>لنوثق معاً ذكريات لا تنسى</div>
       </div>
 
       {topName && bottomName && (
@@ -196,13 +208,6 @@ function PhotoUploader() {
           color: 'white',
         }}
       >
-        {uploadedURL && (
-          <div>
-            <h2>Uploaded Image:</h2>
-            <img src={uploadedURL} alt="Uploaded" width="300" />
-          </div>
-        )}
-
         {showCamera && (
           <div className="camera-container">
             <video ref={videoRef} autoPlay playsInline width="400" height="300" />
