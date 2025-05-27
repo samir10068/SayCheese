@@ -5,7 +5,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
-const basicAuth = require('express-basic-auth');
 const archiver = require('archiver');
 const axios = require('axios');
 
@@ -18,12 +17,6 @@ cloudinary.config({
   api_key: process.env.CLOUD_KEY,
   api_secret: process.env.CLOUD_SECRET
 });
-
-// 🔐 Protect /admin route
-app.use('/admin', basicAuth({
-  users: { [process.env.ADMIN_USER]: process.env.ADMIN_PASS },
-  challenge: true,
-}));
 
 // File paths
 const GALLERY_PATH = path.join(__dirname, 'gallery.json');
@@ -51,6 +44,16 @@ const upload = multer({ storage });
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Admin login route
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(401);
+  }
+});
 
 // Upload image
 app.post('/api/upload', upload.single('photo'), async (req, res) => {
