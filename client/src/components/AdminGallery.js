@@ -267,9 +267,9 @@ function AdminGallery() {
           💾 Save Heading
         </button>
          <div style={{ marginTop: 20, textAlign: 'center', fontFamily: font, fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>
-          <div>{topName || 'Your Name'}</div>
+          <div>{headingTitle || 'Your Title'}</div>
           <div style={{ fontSize: '2.5rem' }}>&</div>
-          <div>{bottomName || 'Partner Name'}</div>
+          <div>{headingSubtitle || 'Partner Title'}</div>
         </div>
       </div>
 
