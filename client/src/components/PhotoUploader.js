@@ -159,8 +159,8 @@ function PhotoUploader() {
           animation: 'pulseGlow 3s ease-in-out infinite',
           zIndex: 10
         }}
-      >
-        ومن هون بتبلش الذكريات
+      >Say cheese
+لنوثق معاً ذكريات لا تنسى
       </div>
 
       {topName && bottomName && (
