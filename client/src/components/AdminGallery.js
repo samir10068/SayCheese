@@ -11,6 +11,9 @@ function AdminGallery() {
   const [topName, setTopName] = useState('');
   const [bottomName, setBottomName] = useState('');
   const [font, setFont] = useState('Arial');
+  const [headingTitle, setHeadingTitle] = useState('');
+  const [headingSubtitle, setHeadingSubtitle] = useState('');
+  const [headingFont, setHeadingFont] = useState('Cairo');
 
   const fetchPhotos = async () => {
     setLoading(true);
@@ -46,6 +49,18 @@ function AdminGallery() {
     }
   };
 
+  const fetchHeading = async () => {
+    try {
+      const res = await fetch('https://saycheese-0cp0.onrender.com/api/heading');
+      const data = await res.json();
+      setHeadingTitle(data.title);
+      setHeadingSubtitle(data.subtitle);
+      setHeadingFont(data.font);
+    } catch (err) {
+      console.error('Failed to load heading');
+    }
+  };
+
   const updateNames = async () => {
     try {
       await fetch('https://saycheese-0cp0.onrender.com/api/names', {
@@ -58,23 +73,37 @@ function AdminGallery() {
       alert('Failed to update names');
     }
   };
-const deleteAllPhotos = async () => {
-  const firstConfirm = window.confirm('⚠️ Are you sure you want to delete ALL photos?');
-  if (!firstConfirm) return;
 
-  const secondConfirm = window.confirm('This action is irreversible. Confirm delete all?');
-  if (!secondConfirm) return;
+  const updateHeading = async () => {
+    try {
+      await fetch('https://saycheese-0cp0.onrender.com/api/heading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: headingTitle, subtitle: headingSubtitle, font: headingFont }),
+      });
+      alert('Heading updated!');
+    } catch (err) {
+      alert('Failed to update heading');
+    }
+  };
 
-  try {
-    await fetch('https://saycheese-0cp0.onrender.com/api/photos', {
-      method: 'DELETE',
-    });
-    setPhotos([]);
-    alert('✅ All photos deleted.');
-  } catch (err) {
-    alert('❌ Failed to delete all photos.');
-  }
-};
+  const deleteAllPhotos = async () => {
+    const firstConfirm = window.confirm('⚠️ Are you sure you want to delete ALL photos?');
+    if (!firstConfirm) return;
+
+    const secondConfirm = window.confirm('This action is irreversible. Confirm delete all?');
+    if (!secondConfirm) return;
+
+    try {
+      await fetch('https://saycheese-0cp0.onrender.com/api/photos', {
+        method: 'DELETE',
+      });
+      setPhotos([]);
+      alert('✅ All photos deleted.');
+    } catch (err) {
+      alert('❌ Failed to delete all photos.');
+    }
+  };
 
   const deletePhoto = async (id) => {
     try {
@@ -108,20 +137,22 @@ const deleteAllPhotos = async () => {
     }
     setBgUploading(false);
   };
-const deleteBackground = async () => {
-  const confirm = window.confirm('Are you sure you want to remove the background photo?');
-  if (!confirm) return;
 
-  try {
-    await fetch('https://saycheese-0cp0.onrender.com/api/background', {
-      method: 'DELETE',
-    });
-    setBackgroundURL('');
-    alert('✅ Background photo removed.');
-  } catch (err) {
-    alert('❌ Failed to remove background photo.');
-  }
-};
+  const deleteBackground = async () => {
+    const confirm = window.confirm('Are you sure you want to remove the background photo?');
+    if (!confirm) return;
+
+    try {
+      await fetch('https://saycheese-0cp0.onrender.com/api/background', {
+        method: 'DELETE',
+      });
+      setBackgroundURL('');
+      alert('✅ Background photo removed.');
+    } catch (err) {
+      alert('❌ Failed to remove background photo.');
+    }
+  };
+
   const downloadAllPhotos = async () => {
     const zip = new JSZip();
     const folder = zip.folder('gallery');
@@ -143,6 +174,7 @@ const deleteBackground = async () => {
     fetchPhotos();
     fetchBackground();
     fetchNames();
+    fetchHeading();
   }, []);
 
   return (
@@ -153,75 +185,88 @@ const deleteBackground = async () => {
         <h2>🌄 Change Homepage Background</h2>
         <input type="file" accept="image/*" onChange={handleBackgroundUpload} />
         {bgUploading && <p>Uploading...</p>}
-           <p>Current Background:</p>
-    <img src={backgroundURL} alt="Background" style={{ width: 300, borderRadius: 8 }} />
-    <div style={{ marginTop: 10 }}>
-      <button
-        onClick={deleteBackground}
-        style={{
-          backgroundColor: '#dc3545',
-          color: '#fff',
-          border: 'none',
-          padding: '6px 12px',
-          borderRadius: '6px',
-          cursor: 'pointer'
-        }}
-      >
-        🗑️ Remove Background
-      </button>
-    </div>
-  </div>
+        <p>Current Background:</p>
+        <img src={backgroundURL} alt="Background" style={{ width: 300, borderRadius: 8 }} />
+        <div style={{ marginTop: 10 }}>
+          <button
+            onClick={deleteBackground}
+            style={{
+              backgroundColor: '#dc3545',
+              color: '#fff',
+              border: 'none',
+              padding: '6px 12px',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            🗑️ Remove Background
+          </button>
+        </div>
+      </div>
 
- <div style={{ marginBottom: 40 }}>
-  <h2>💍 Customize Names and Font</h2>
-  <input
-    type="text"
-    placeholder="Top Name"
-    value={topName}
-    onChange={e => setTopName(e.target.value)}
-    style={{ marginRight: 10, padding: 6 }}
-  />
-  <input
-    type="text"
-    placeholder="Bottom Name"
-    value={bottomName}
-    onChange={e => setBottomName(e.target.value)}
-    style={{ marginRight: 10, padding: 6 }}
-  />
+      <div style={{ marginBottom: 40 }}>
+        <h2>💍 Customize Names and Font</h2>
+        <input
+          type="text"
+          placeholder="Top Name"
+          value={topName}
+          onChange={e => setTopName(e.target.value)}
+          style={{ marginRight: 10, padding: 6 }}
+        />
+        <input
+          type="text"
+          placeholder="Bottom Name"
+          value={bottomName}
+          onChange={e => setBottomName(e.target.value)}
+          style={{ marginRight: 10, padding: 6 }}
+        />
+        <select value={font} onChange={e => setFont(e.target.value)} style={{ padding: 6 }}>
+          {[ 'Arial', 'Georgia', 'Times New Roman', 'Courier New', 'Pacifico', 'Playfair Display', 'Lobster', 'Dancing Script' ].map(f => (
+            <option key={f} value={f}>{f}</option>
+          ))}
+        </select>
+        <button onClick={updateNames} style={{ marginLeft: 10, padding: '6px 12px' }}>
+          💾 Save Names
+        </button>
+        <div style={{ marginTop: 20, textAlign: 'center', fontFamily: font, fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>
+          <div>{topName || 'Your Name'}</div>
+          <div style={{ fontSize: '2.5rem' }}>&</div>
+          <div>{bottomName || 'Partner Name'}</div>
+        </div>
+      </div>
 
-  <select value={font} onChange={e => setFont(e.target.value)} style={{ padding: 6 }}>
-    {[
-      'Arial',
-      'Georgia',
-      'Times New Roman',
-      'Courier New',
-      'Pacifico',
-      'Playfair Display',
-      'Lobster',
-      'Dancing Script'
-    ].map(f => (
-      <option key={f} value={f}>{f}</option>
-    ))}
-  </select>
-
-  <button onClick={updateNames} style={{ marginLeft: 10, padding: '6px 12px' }}>
-    💾 Save Names
-  </button>
-
-  {/* 👇 Live Preview */}
-  <div style={{
-    marginTop: 20,
-    textAlign: 'center',
-    fontFamily: font,
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    color: '#333'
-  }}>
-    <div>{topName || 'Your Name'}</div>
-    <div style={{ fontSize: '2.5rem' }}>&</div>
-    <div>{bottomName || 'Partner Name'}</div>
-  </div>
-</div>
+      <div style={{ marginBottom: 40 }}>
+        <h2>📝 Customize Homepage Heading</h2>
+        <input
+          type="text"
+          placeholder="Main Title"
+          value={headingTitle}
+          onChange={e => setHeadingTitle(e.target.value)}
+          style={{ padding: 6, marginRight: 10 }}
+        />
+        <input
+          type="text"
+          placeholder="Subtitle"
+          value={headingSubtitle}
+          onChange={e => setHeadingSubtitle(e.target.value)}
+          style={{ padding: 6, marginRight: 10 }}
+        />
+        <select
+          value={headingFont}
+          onChange={e => setHeadingFont(e.target.value)}
+          style={{ padding: 6 }}
+        >
+          {[ 'Cairo', 'Arial', 'Georgia', 'Times New Roman', 'Pacifico', 'Playfair Display', 'Lobster', 'Dancing Script' ].map(f => (
+            <option key={f} value={f}>{f}</option>
+          ))}
+        </select>
+        <button
+          onClick={updateHeading}
+          style={{ marginLeft: 10, padding: '6px 12px' }}
+        >
+          💾 Save Heading
+        </button>
+      </div>
 
       <button
         onClick={downloadAllPhotos}
@@ -238,21 +283,23 @@ const deleteBackground = async () => {
       >
         ⬇️ Download All Photos
       </button>
-<button
-  onClick={deleteAllPhotos}
-  style={{
-    marginBottom: 20,
-    backgroundColor: '#dc3545',
-    color: '#fff',
-    border: 'none',
-    padding: '10px 16px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-  }}
->
-  🗑️ Delete All Photos
-</button>
+
+      <button
+        onClick={deleteAllPhotos}
+        style={{
+          marginBottom: 20,
+          backgroundColor: '#dc3545',
+          color: '#fff',
+          border: 'none',
+          padding: '10px 16px',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+        }}
+      >
+        🗑️ Delete All Photos
+      </button>
+
       {loading && <p>Loading photos...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 

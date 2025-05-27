@@ -29,11 +29,13 @@ app.use('/admin', basicAuth({
 const GALLERY_PATH = path.join(__dirname, 'gallery.json');
 const BACKGROUND_PATH = path.join(__dirname, 'background.json');
 const NAMES_PATH = path.join(__dirname, 'names.json');
+const HEADING_PATH = path.join(__dirname, 'heading.json');
 
 // Ensure files exist
 if (!fs.existsSync(GALLERY_PATH)) fs.writeFileSync(GALLERY_PATH, JSON.stringify([]));
 if (!fs.existsSync(BACKGROUND_PATH)) fs.writeFileSync(BACKGROUND_PATH, JSON.stringify({ url: '' }));
 if (!fs.existsSync(NAMES_PATH)) fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName: '', bottomName: '', font: 'Arial' }));
+if (!fs.existsSync(HEADING_PATH)) fs.writeFileSync(HEADING_PATH, JSON.stringify({ title: 'Say cheese', subtitle: 'لنوثق معاً ذكريات لا تنسى', font: 'Cairo' }));
 
 // Multer setup
 const storage = multer.diskStorage({
@@ -54,17 +56,11 @@ app.use(express.json());
 app.post('/api/upload', upload.single('photo'), async (req, res) => {
   try {
     const localPath = req.file.path;
-    const result = await cloudinary.uploader.upload(localPath, {
-      folder: 'saycheese/uploads'
-    });
+    const result = await cloudinary.uploader.upload(localPath, { folder: 'saycheese/uploads' });
     fs.unlinkSync(localPath);
 
     const id = Date.now().toString();
-    const photoData = {
-      id,
-      url: result.secure_url,
-      uploadedAt: new Date()
-    };
+    const photoData = { id, url: result.secure_url, uploadedAt: new Date() };
 
     const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH));
     gallery.push(photoData);
@@ -83,7 +79,7 @@ app.get('/api/photos', (req, res) => {
   res.json(gallery);
 });
 
-// Delete photo
+// Delete photo by ID
 app.delete('/api/photos/:id', (req, res) => {
   const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH));
   const updated = gallery.filter(p => p.id !== req.params.id);
@@ -91,40 +87,9 @@ app.delete('/api/photos/:id', (req, res) => {
   res.sendStatus(200);
 });
 
-// Upload background image
-app.post('/api/background', upload.single('photo'), async (req, res) => {
-  try {
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'saycheese/backgrounds'
-    });
-    fs.unlinkSync(req.file.path);
-
-    const background = { url: result.secure_url };
-    fs.writeFileSync(BACKGROUND_PATH, JSON.stringify(background, null, 2));
-
-    res.json(background);
-  } catch (err) {
-    console.error('Background upload error:', err);
-    res.status(500).send('Background upload failed');
-  }
-});
-
-// Get current background
-app.get('/api/background', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(BACKGROUND_PATH));
-  res.json(data);
-});
-
-// Get names and font
-app.get('/api/names', (req, res) => {
-  const data = JSON.parse(fs.readFileSync(NAMES_PATH));
-  res.json(data);
-});
-
-// Update names and font
-app.post('/api/names', express.json(), (req, res) => {
-  const { topName, bottomName, font } = req.body;
-  fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName, bottomName, font }, null, 2));
+// Delete all photos
+app.delete('/api/photos', (req, res) => {
+  fs.writeFileSync(GALLERY_PATH, JSON.stringify([], null, 2));
   res.sendStatus(200);
 });
 
@@ -151,11 +116,63 @@ app.get('/api/photos/download-zip', async (req, res) => {
     res.status(500).send('Failed to download photos');
   }
 });
-//delete all photo's
-app.delete('/api/photos', (req, res) => {
-  fs.writeFileSync(GALLERY_PATH, JSON.stringify([], null, 2));
+
+// Upload background image
+app.post('/api/background', upload.single('photo'), async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'saycheese/backgrounds'
+    });
+    fs.unlinkSync(req.file.path);
+
+    const background = { url: result.secure_url };
+    fs.writeFileSync(BACKGROUND_PATH, JSON.stringify(background, null, 2));
+
+    res.json(background);
+  } catch (err) {
+    console.error('Background upload error:', err);
+    res.status(500).send('Background upload failed');
+  }
+});
+
+// Get current background
+app.get('/api/background', (req, res) => {
+  const data = JSON.parse(fs.readFileSync(BACKGROUND_PATH));
+  res.json(data);
+});
+
+// Delete background
+app.delete('/api/background', (req, res) => {
+  fs.writeFileSync(BACKGROUND_PATH, JSON.stringify({ url: '' }, null, 2));
   res.sendStatus(200);
 });
+
+// Get names and font
+app.get('/api/names', (req, res) => {
+  const data = JSON.parse(fs.readFileSync(NAMES_PATH));
+  res.json(data);
+});
+
+// Update names and font
+app.post('/api/names', (req, res) => {
+  const { topName, bottomName, font } = req.body;
+  fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName, bottomName, font }, null, 2));
+  res.sendStatus(200);
+});
+
+// Get heading (title + subtitle + font)
+app.get('/api/heading', (req, res) => {
+  const data = JSON.parse(fs.readFileSync(HEADING_PATH));
+  res.json(data);
+});
+
+// Update heading
+app.post('/api/heading', (req, res) => {
+  const { title, subtitle, font } = req.body;
+  fs.writeFileSync(HEADING_PATH, JSON.stringify({ title, subtitle, font }, null, 2));
+  res.sendStatus(200);
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);

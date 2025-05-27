@@ -9,6 +9,9 @@ function PhotoUploader() {
   const [topName, setTopName] = useState('');
   const [bottomName, setBottomName] = useState('');
   const [font, setFont] = useState('Arial');
+  const [headingTitle, setHeadingTitle] = useState('');
+  const [headingSubtitle, setHeadingSubtitle] = useState('');
+  const [headingFont, setHeadingFont] = useState('Cairo');
 
   useEffect(() => {
     const fetchBackground = async () => {
@@ -33,8 +36,21 @@ function PhotoUploader() {
       }
     };
 
+    const fetchHeading = async () => {
+      try {
+        const res = await fetch('https://saycheese-0cp0.onrender.com/api/heading');
+        const data = await res.json();
+        setHeadingTitle(data.title);
+        setHeadingSubtitle(data.subtitle);
+        setHeadingFont(data.font || 'Cairo');
+      } catch (err) {
+        console.error('Failed to fetch heading:', err);
+      }
+    };
+
     fetchBackground();
     fetchNames();
+    fetchHeading();
   }, []);
 
   const uploadFile = async (file) => {
@@ -48,7 +64,7 @@ function PhotoUploader() {
       });
 
       if (res.ok) {
-       await res.json();
+        await res.json();
         alert('📸 Image uploaded successfully!');
       } else {
         alert('❌ Failed to upload image.');
@@ -164,7 +180,7 @@ function PhotoUploader() {
           textAlign: 'center',
           fontSize: '2.5rem',
           fontWeight: 'bold',
-          fontFamily: '"Cairo", sans-serif',
+          fontFamily: `"${headingFont}", sans-serif`,
           color: '#fff',
           padding: '10px 20px',
           background: 'rgba(0, 0, 0, 0.3)',
@@ -173,8 +189,8 @@ function PhotoUploader() {
           zIndex: 10
         }}
       >
-        <div style={{ fontSize: '2.2rem', marginBottom: '5px' }}>Say cheese</div>
-        <div style={{ fontSize: '1.8rem' }}>لنوثق معاً ذكريات لا تنسى</div>
+        <div style={{ fontSize: '2.2rem', marginBottom: '5px' }}>{headingTitle || 'Say cheese'}</div>
+        <div style={{ fontSize: '1.8rem' }}>{headingSubtitle || 'لنوثق معاً ذكريات لا تنسى'}</div>
       </div>
 
       {topName && bottomName && (
