@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "archiver": "^7.0.1",
     "cloudinary": "^2.6.1",
     "express-basic-auth": "^1.2.1"
   }
