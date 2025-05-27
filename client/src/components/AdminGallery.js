@@ -148,18 +148,56 @@ const deleteAllPhotos = async () => {
         )}
       </div>
 
-      <div style={{ marginBottom: 40 }}>
-        <h2>💍 Names + Symbol</h2>
-        <input placeholder="Top Name" value={topName} onChange={e => setTopName(e.target.value)} />
-        <input placeholder="Bottom Name" value={bottomName} onChange={e => setBottomName(e.target.value)} />
-        <select value={font} onChange={e => setFont(e.target.value)}>
-          <option value="Arial">Arial</option>
-          <option value="Playfair Display">Playfair Display</option>
-          <option value="Pacifico">Pacifico</option>
-          <option value="Georgia">Georgia</option>
-        </select>
-        <button onClick={updateNames}>💾 Save Names</button>
-      </div>
+ <div style={{ marginBottom: 40 }}>
+  <h2>💍 Customize Names and Font</h2>
+  <input
+    type="text"
+    placeholder="Top Name"
+    value={topName}
+    onChange={e => setTopName(e.target.value)}
+    style={{ marginRight: 10, padding: 6 }}
+  />
+  <input
+    type="text"
+    placeholder="Bottom Name"
+    value={bottomName}
+    onChange={e => setBottomName(e.target.value)}
+    style={{ marginRight: 10, padding: 6 }}
+  />
+
+  <select value={font} onChange={e => setFont(e.target.value)} style={{ padding: 6 }}>
+    {[
+      'Arial',
+      'Georgia',
+      'Times New Roman',
+      'Courier New',
+      'Pacifico',
+      'Playfair Display',
+      'Lobster',
+      'Dancing Script'
+    ].map(f => (
+      <option key={f} value={f}>{f}</option>
+    ))}
+  </select>
+
+  <button onClick={updateNames} style={{ marginLeft: 10, padding: '6px 12px' }}>
+    💾 Save Names
+  </button>
+
+  {/* 👇 Live Preview */}
+  <div style={{
+    marginTop: 20,
+    textAlign: 'center',
+    fontFamily: font,
+    fontSize: '2rem',
+    fontWeight: 'bold',
+    color: '#333'
+  }}>
+    <div>{topName || 'Your Name'}</div>
+    <div style={{ fontSize: '2.5rem' }}>&</div>
+    <div>{bottomName || 'Partner Name'}</div>
+  </div>
+</div>
 
       <button
         onClick={downloadAllPhotos}
