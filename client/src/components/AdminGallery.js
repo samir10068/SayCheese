@@ -268,7 +268,7 @@ function AdminGallery() {
         </button>
          <div style={{ marginTop: 20, textAlign: 'center', fontFamily: font, fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>
           <div>{headingTitle || 'Your Title'}</div>
-          <div style={{ fontSize: '2.5rem' }}>&</div>
+          <div style={{ fontSize: '2.5rem' }}>______</div>
           <div>{headingSubtitle || 'Partner Title'}</div>
         </div>
       </div>
