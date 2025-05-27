@@ -8,6 +8,9 @@ function AdminGallery() {
   const [error, setError] = useState('');
   const [backgroundURL, setBackgroundURL] = useState('');
   const [bgUploading, setBgUploading] = useState(false);
+  const [topName, setTopName] = useState('');
+  const [bottomName, setBottomName] = useState('');
+  const [font, setFont] = useState('Arial');
 
   const fetchPhotos = async () => {
     setLoading(true);
@@ -30,6 +33,48 @@ function AdminGallery() {
       console.error('Failed to load background');
     }
   };
+
+  const fetchNames = async () => {
+    try {
+      const res = await fetch('https://saycheese-0cp0.onrender.com/api/names');
+      const data = await res.json();
+      setTopName(data.topName);
+      setBottomName(data.bottomName);
+      setFont(data.font);
+    } catch (err) {
+      console.error('Failed to load names');
+    }
+  };
+
+  const updateNames = async () => {
+    try {
+      await fetch('https://saycheese-0cp0.onrender.com/api/names', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topName, bottomName, font }),
+      });
+      alert('Updated!');
+    } catch (err) {
+      alert('Failed to update names');
+    }
+  };
+const deleteAllPhotos = async () => {
+  const firstConfirm = window.confirm('⚠️ Are you sure you want to delete ALL photos?');
+  if (!firstConfirm) return;
+
+  const secondConfirm = window.confirm('This action is irreversible. Confirm delete all?');
+  if (!secondConfirm) return;
+
+  try {
+    await fetch('https://saycheese-0cp0.onrender.com/api/photos', {
+      method: 'DELETE',
+    });
+    setPhotos([]);
+    alert('✅ All photos deleted.');
+  } catch (err) {
+    alert('❌ Failed to delete all photos.');
+  }
+};
 
   const deletePhoto = async (id) => {
     try {
@@ -84,6 +129,7 @@ function AdminGallery() {
   useEffect(() => {
     fetchPhotos();
     fetchBackground();
+    fetchNames();
   }, []);
 
   return (
@@ -102,6 +148,19 @@ function AdminGallery() {
         )}
       </div>
 
+      <div style={{ marginBottom: 40 }}>
+        <h2>💍 Names + Symbol</h2>
+        <input placeholder="Top Name" value={topName} onChange={e => setTopName(e.target.value)} />
+        <input placeholder="Bottom Name" value={bottomName} onChange={e => setBottomName(e.target.value)} />
+        <select value={font} onChange={e => setFont(e.target.value)}>
+          <option value="Arial">Arial</option>
+          <option value="Playfair Display">Playfair Display</option>
+          <option value="Pacifico">Pacifico</option>
+          <option value="Georgia">Georgia</option>
+        </select>
+        <button onClick={updateNames}>💾 Save Names</button>
+      </div>
+
       <button
         onClick={downloadAllPhotos}
         style={{
@@ -117,7 +176,21 @@ function AdminGallery() {
       >
         ⬇️ Download All Photos
       </button>
-
+<button
+  onClick={deleteAllPhotos}
+  style={{
+    marginBottom: 20,
+    backgroundColor: '#dc3545',
+    color: '#fff',
+    border: 'none',
+    padding: '10px 16px',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+  }}
+>
+  🗑️ Delete All Photos
+</button>
       {loading && <p>Loading photos...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 

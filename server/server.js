@@ -151,7 +151,11 @@ app.get('/api/photos/download-zip', async (req, res) => {
     res.status(500).send('Failed to download photos');
   }
 });
-
+//delete all photo's
+app.delete('/api/photos', (req, res) => {
+  fs.writeFileSync(GALLERY_PATH, JSON.stringify([], null, 2));
+  res.sendStatus(200);
+});
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
