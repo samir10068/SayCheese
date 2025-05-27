@@ -111,7 +111,6 @@ function PhotoUploader() {
         }
       `}</style>
 
-      {/* Background Image */}
       {backgroundUrl && (
         <div
           style={{
@@ -129,7 +128,6 @@ function PhotoUploader() {
         />
       )}
 
-      {/* Dark Overlay */}
       <div
         style={{
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
@@ -142,12 +140,12 @@ function PhotoUploader() {
         }}
       />
 
-      {/* Animated Arabic Heading */}
+      {/* Arabic Heading at Bottom Center */}
       <div
         className="responsive-heading"
         style={{
           position: 'absolute',
-          top: '30px',
+          bottom: '30px',
           left: '50%',
           transform: 'translateX(-50%)',
           textAlign: 'center',
@@ -164,7 +162,6 @@ function PhotoUploader() {
         ومن هون بتبلش الذكريات
       </div>
 
-      {/* Centered Names & Symbol */}
       {topName && bottomName && (
         <div
           className="responsive-names"
@@ -188,7 +185,6 @@ function PhotoUploader() {
         </div>
       )}
 
-      {/* Foreground Content */}
       <div
         style={{
           position: 'relative',
@@ -215,7 +211,6 @@ function PhotoUploader() {
           </div>
         )}
 
-        {/* Floating Upload Button */}
         <div
           style={{
             position: 'fixed',
