@@ -48,7 +48,7 @@ function PhotoUploader() {
       });
 
       if (res.ok) {
-        const data = await res.json();
+       await res.json();
         alert('📸 Image uploaded successfully!');
       } else {
         alert('❌ Failed to upload image.');
