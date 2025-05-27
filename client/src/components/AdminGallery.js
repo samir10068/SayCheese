@@ -11,6 +11,9 @@ function AdminGallery() {
   const [topName, setTopName] = useState('');
   const [bottomName, setBottomName] = useState('');
   const [font, setFont] = useState('Arial');
+  const [headingTitle, setHeadingTitle] = useState('');
+  const [headingSubtitle, setHeadingSubtitle] = useState('');
+  const [headingFont, setHeadingFont] = useState('Cairo');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -63,6 +66,18 @@ function AdminGallery() {
     }
   };
 
+  const fetchHeading = async () => {
+    try {
+      const res = await fetch('https://saycheese-0cp0.onrender.com/api/heading');
+      const data = await res.json();
+      setHeadingTitle(data.title);
+      setHeadingSubtitle(data.subtitle);
+      setHeadingFont(data.font);
+    } catch (err) {
+      console.error('Failed to load heading');
+    }
+  };
+
   const updateNames = async () => {
     try {
       await fetch('https://saycheese-0cp0.onrender.com/api/names', {
@@ -73,6 +88,19 @@ function AdminGallery() {
       alert('Updated!');
     } catch (err) {
       alert('Failed to update names');
+    }
+  };
+
+  const updateHeading = async () => {
+    try {
+      await fetch('https://saycheese-0cp0.onrender.com/api/heading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: headingTitle, subtitle: headingSubtitle, font: headingFont }),
+      });
+      alert('Heading updated!');
+    } catch (err) {
+      alert('Failed to update heading');
     }
   };
 
@@ -126,6 +154,21 @@ function AdminGallery() {
     setBgUploading(false);
   };
 
+  const deleteBackground = async () => {
+    const confirm = window.confirm('Are you sure you want to remove the background photo?');
+    if (!confirm) return;
+
+    try {
+      await fetch('https://saycheese-0cp0.onrender.com/api/background', {
+        method: 'DELETE',
+      });
+      setBackgroundURL('');
+      alert('✅ Background photo removed.');
+    } catch (err) {
+      alert('❌ Failed to remove background photo.');
+    }
+  };
+
   const downloadAllPhotos = async () => {
     const zip = new JSZip();
     const folder = zip.folder('gallery');
@@ -148,6 +191,7 @@ function AdminGallery() {
       fetchPhotos();
       fetchBackground();
       fetchNames();
+      fetchHeading();
     }
   }, [isLoggedIn]);
 
@@ -174,55 +218,47 @@ function AdminGallery() {
           <div style={{ marginTop: 10 }}>
             <p>Current Background:</p>
             <img src={backgroundURL} alt="Background" style={{ width: 300, borderRadius: 8 }} />
+            <button onClick={deleteBackground} style={{ backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>🗑️ Remove Background</button>
           </div>
         )}
       </div>
 
       <div style={{ marginBottom: 40 }}>
-        <h2>💍 Names + Symbol</h2>
+        <h2>💍 Customize Names and Font</h2>
         <input placeholder="Top Name" value={topName} onChange={e => setTopName(e.target.value)} />
         <input placeholder="Bottom Name" value={bottomName} onChange={e => setBottomName(e.target.value)} />
         <select value={font} onChange={e => setFont(e.target.value)}>
-          <option value="Arial">Arial</option>
-          <option value="Playfair Display">Playfair Display</option>
-          <option value="Pacifico">Pacifico</option>
-          <option value="Georgia">Georgia</option>
+          {[ 'Arial', 'Georgia', 'Times New Roman', 'Courier New', 'Pacifico', 'Playfair Display', 'Lobster', 'Dancing Script' ].map(f => (
+            <option key={f} value={f}>{f}</option>
+          ))}
         </select>
         <button onClick={updateNames}>💾 Save Names</button>
+        <div style={{ marginTop: 20, textAlign: 'center', fontFamily: font, fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>
+          <div>{topName || 'Your Name'}</div>
+          <div style={{ fontSize: '2.5rem' }}>&</div>
+          <div>{bottomName || 'Partner Name'}</div>
+        </div>
       </div>
 
-      <button
-        onClick={downloadAllPhotos}
-        style={{
-          marginBottom: 10,
-          backgroundColor: '#28a745',
-          color: '#fff',
-          border: 'none',
-          padding: '10px 16px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-        }}
-      >
-        ⬇️ Download All Photos
-      </button>
+      <div style={{ marginBottom: 40 }}>
+        <h2>📝 Customize Homepage Heading</h2>
+        <input placeholder="Main Title" value={headingTitle} onChange={e => setHeadingTitle(e.target.value)} />
+        <input placeholder="Subtitle" value={headingSubtitle} onChange={e => setHeadingSubtitle(e.target.value)} />
+        <select value={headingFont} onChange={e => setHeadingFont(e.target.value)}>
+          {[ 'Cairo', 'Arial', 'Georgia', 'Times New Roman', 'Pacifico', 'Playfair Display', 'Lobster', 'Dancing Script' ].map(f => (
+            <option key={f} value={f}>{f}</option>
+          ))}
+        </select>
+        <button onClick={updateHeading}>💾 Save Heading</button>
+        <div style={{ marginTop: 20, textAlign: 'center', fontFamily: headingFont, fontSize: '2rem', fontWeight: 'bold', color: '#333' }}>
+          <div>{headingTitle || 'Your Title'}</div>
+          <div style={{ fontSize: '2.5rem' }}>______</div>
+          <div>{headingSubtitle || 'Partner Title'}</div>
+        </div>
+      </div>
 
-      <button
-        onClick={deleteAllPhotos}
-        style={{
-          marginBottom: 20,
-          backgroundColor: '#dc3545',
-          color: '#fff',
-          border: 'none',
-          padding: '10px 16px',
-          borderRadius: '8px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          marginLeft: 10,
-        }}
-      >
-        🗑 Delete All Photos
-      </button>
+      <button onClick={downloadAllPhotos} style={{ marginBottom: 20, backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>⬇️ Download All Photos</button>
+      <button onClick={deleteAllPhotos} style={{ marginBottom: 20, backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', marginLeft: 10 }}>🗑️ Delete All Photos</button>
 
       {loading && <p>Loading photos...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
