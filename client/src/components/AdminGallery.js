@@ -108,7 +108,20 @@ const deleteAllPhotos = async () => {
     }
     setBgUploading(false);
   };
+const deleteBackground = async () => {
+  const confirm = window.confirm('Are you sure you want to remove the background photo?');
+  if (!confirm) return;
 
+  try {
+    await fetch('https://saycheese-0cp0.onrender.com/api/background', {
+      method: 'DELETE',
+    });
+    setBackgroundURL('');
+    alert('✅ Background photo removed.');
+  } catch (err) {
+    alert('❌ Failed to remove background photo.');
+  }
+};
   const downloadAllPhotos = async () => {
     const zip = new JSZip();
     const folder = zip.folder('gallery');
@@ -140,13 +153,24 @@ const deleteAllPhotos = async () => {
         <h2>🌄 Change Homepage Background</h2>
         <input type="file" accept="image/*" onChange={handleBackgroundUpload} />
         {bgUploading && <p>Uploading...</p>}
-        {backgroundURL && (
-          <div style={{ marginTop: 10 }}>
-            <p>Current Background:</p>
-            <img src={backgroundURL} alt="Background" style={{ width: 300, borderRadius: 8 }} />
-          </div>
-        )}
-      </div>
+           <p>Current Background:</p>
+    <img src={backgroundURL} alt="Background" style={{ width: 300, borderRadius: 8 }} />
+    <div style={{ marginTop: 10 }}>
+      <button
+        onClick={deleteBackground}
+        style={{
+          backgroundColor: '#dc3545',
+          color: '#fff',
+          border: 'none',
+          padding: '6px 12px',
+          borderRadius: '6px',
+          cursor: 'pointer'
+        }}
+      >
+        🗑️ Remove Background
+      </button>
+    </div>
+  </div>
 
  <div style={{ marginBottom: 40 }}>
   <h2>💍 Customize Names and Font</h2>
