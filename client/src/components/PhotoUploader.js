@@ -159,8 +159,10 @@ function PhotoUploader() {
           animation: 'pulseGlow 3s ease-in-out infinite',
           zIndex: 10
         }}
-      >Say cheese
-لنوثق معاً ذكريات لا تنسى
+      
+      >
+  <div style={{ fontSize: '2.2rem', marginBottom: '5px' }}>Say cheese</div>
+  <div style={{ fontSize: '1.8rem' }}>لنوثق معاً ذكريات لا تنسى</div>
       </div>
 
       {topName && bottomName && (
