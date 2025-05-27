@@ -19,7 +19,7 @@ cloudinary.config({
   api_secret: process.env.CLOUD_SECRET
 });
 
-// Basic auth for /admin route
+// 🔐 Protect /admin route
 app.use('/admin', basicAuth({
   users: { [process.env.ADMIN_USER]: process.env.ADMIN_PASS },
   challenge: true,
