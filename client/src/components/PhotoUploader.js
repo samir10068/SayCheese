@@ -213,7 +213,7 @@ function PhotoUploader() {
           }}
         >
           <div>{topName}</div>
-          <div style={{ fontSize: '3rem' }}>&</div>
+             {showAndSymbol && <div style={{ fontSize: '3rem' }}>&</div>}
           <div>{bottomName}</div>
         </div>
       )}
