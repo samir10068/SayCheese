@@ -230,7 +230,7 @@ function AdminGallery() {
         <input placeholder="Top Name" value={topName} onChange={e => setTopName(e.target.value)} />
         <input placeholder="Bottom Name" value={bottomName} onChange={e => setBottomName(e.target.value)} />
         <select value={font} onChange={e => setFont(e.target.value)}>
-          {[ 'Arial', 'Georgia', 'Times New Roman', 'Courier New', 'Pacifico', 'Playfair Display', 'Lobster', 'Dancing Script' ].map(f => (
+          {['Arial', 'Georgia', 'Times New Roman', 'Courier New', 'Pacifico', 'Playfair Display', 'Lobster', 'Dancing Script'].map(f => (
             <option key={f} value={f}>{f}</option>
           ))}
         </select>
@@ -249,7 +249,23 @@ function AdminGallery() {
         </div>
       </div>
 
-      {/* The rest of the component remains unchanged */}
+      <button onClick={downloadAllPhotos} style={{ marginBottom: 20, backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>⬇️ Download All Photos</button>
+      <button onClick={deleteAllPhotos} style={{ marginBottom: 20, backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', marginLeft: 10 }}>🗑️ Delete All Photos</button>
+
+      {loading && <p>Loading photos...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+        {photos.map(photo => (
+          <div key={photo.id} style={{ border: '1px solid #ccc', padding: 10 }}>
+            <img src={photo.url} alt="Uploaded" width="200" />
+            <div style={{ marginTop: 10 }}>
+              <button onClick={() => window.open(photo.url, '_blank')}>⬇️ Download</button>
+              <button onClick={() => deletePhoto(photo.id)} style={{ marginLeft: 10 }}>🗑 Delete</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
