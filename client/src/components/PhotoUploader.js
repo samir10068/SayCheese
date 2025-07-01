@@ -9,6 +9,7 @@ function PhotoUploader() {
   const [topName, setTopName] = useState('');
   const [bottomName, setBottomName] = useState('');
   const [font, setFont] = useState('Arial');
+  const [showAndSymbol, setShowAndSymbol] = useState(true);
   const [headingTitle, setHeadingTitle] = useState('');
   const [headingSubtitle, setHeadingSubtitle] = useState('');
   const [headingFont, setHeadingFont] = useState('Cairo');
@@ -31,6 +32,7 @@ function PhotoUploader() {
         setTopName(data.topName);
         setBottomName(data.bottomName);
         setFont(data.font || 'Arial');
+        setShowAndSymbol(data.showAndSymbol ?? true);
       } catch (err) {
         console.error('Failed to fetch names:', err);
       }
