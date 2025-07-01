@@ -27,7 +27,7 @@ const HEADING_PATH = path.join(__dirname, 'heading.json');
 // Ensure files exist
 if (!fs.existsSync(GALLERY_PATH)) fs.writeFileSync(GALLERY_PATH, JSON.stringify([]));
 if (!fs.existsSync(BACKGROUND_PATH)) fs.writeFileSync(BACKGROUND_PATH, JSON.stringify({ url: '' }));
-if (!fs.existsSync(NAMES_PATH)) fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName: '', bottomName: '', font: 'Arial' }));
+if (!fs.existsSync(NAMES_PATH)) fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName: '', bottomName: '', font: 'Arial', showAndSymbol: true }));
 if (!fs.existsSync(HEADING_PATH)) fs.writeFileSync(HEADING_PATH, JSON.stringify({ title: 'Say cheese', subtitle: 'لنوثق معاً ذكريات لا تنسى', font: 'Cairo' }));
 
 // Multer setup
@@ -153,13 +153,13 @@ app.delete('/api/background', (req, res) => {
 // Get names and font
 app.get('/api/names', (req, res) => {
   const data = JSON.parse(fs.readFileSync(NAMES_PATH));
-  res.json(data);
+  res.json({ ...data, showAndSymbol: data.showAndSymbol ?? true });
 });
 
 // Update names and font
 app.post('/api/names', (req, res) => {
-  const { topName, bottomName, font } = req.body;
-  fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName, bottomName, font }, null, 2));
+  const { topName, bottomName, font, showAndSymbol } = req.body;
+  fs.writeFileSync(NAMES_PATH, JSON.stringify({ topName, bottomName, font, showAndSymbol }, null, 2));
   res.sendStatus(200);
 });
 
